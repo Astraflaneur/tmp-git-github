@@ -1,10 +1,12 @@
-# Git
+# Git Cheatsheet
 
 ## Global Settings
 - Related Setup: https://gist.github.com/hofmannsven/6814278
 - Related Pro Tips: https://ochronus.com/git-tips-from-the-trenches/
 - Interactive Beginners Tutorial: http://try.github.io/
 - Git Cheatsheet by GitHub: https://services.github.com/on-demand/downloads/github-git-cheat-sheet/
+- Git Visual Guide: https://onlywei.github.io/explain-git-with-d3/
+- JeS Git&Github Talk: https://sdgniser.github.io/coding_club_blogs/blogs/2024/01/12/git-and-github.html
 
 ## Reminder
 Press `minus + shift + s` and `return` to chop/fold long lines!
