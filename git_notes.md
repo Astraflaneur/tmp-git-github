@@ -76,6 +76,12 @@ NISER Bhubaneswar
 ---
 
 ## Commands
+
+<div align="center">  
+  <img src="./asset/conventions.svg" >  
+  <br>Commits are shown in green as 5-character IDs, and they point to their parents. Branches are shown in orange, and they point to particular commits. The current branch is identified by the special reference HEAD, which is "attached" to that branch. In this image, the five latest commits are shown, with ed489 being the most recent. main (the current branch) points to this commit, while stable (another branch) points to an ancestor of main's commit.<br>
+</div>
+
 ### Install:<br>
 `sudo apt-get install git`
 ### Set up:<br>
@@ -86,10 +92,14 @@ NISER Bhubaneswar
 - `cd project`<br>
 - `git init` *(initialise empty git repo in my folder (based on path) aka .git folder)* <br>
 - `ls -la` *(check my folder)*
+
+
+
 ### Check "world status":<br>
 `git status`
 ### Help for each command
 `git help <command>`
+
 ### Add files
 - `git add .` = add all on current branch
 - `git add -p <param=file>` = add part of file to staging area, ask for each change (if no param => all files) so we have more control and cleaner commits.
@@ -101,6 +111,12 @@ NISER Bhubaneswar
 `git mv <old path> <new path>` *should be followed by:*<br>
 `git rm <old path>`<br>
 `git add <new path>`
+
+<div align="center">  
+  <img src="./asset/diff.svg" >  
+  <br><br>
+</div>
+
 ### Check difference
 - `git diff`= displays what will be added if i `git add`, so what changed in the folder and hasn't been updated yet
 - `git diff <filename>` = displays the alterations of a file (the modified and the commited versions of it)
@@ -115,15 +131,64 @@ NISER Bhubaneswar
 <br>e.g.:<br>
 `git config --global alias.lg "log --color --graph --pretty=format: '%(red%h%(green(%cr)%((bold blue)<%an>%(reset' --abbrev -commit"`
 - `git config --list` - displays our aliases
+
 ### Make archive
 `git archive --format=zip -o latest.zip HEAD`
+
+## What does `git commit` do?
+- commit a file = create a snapshot of the current world state (files, folders & their contents)
+- contains an explanatory message
+- automatically stores metadata (creator, date etc)
+- has a unique (hex) id number
+<br> *e.g.: `git commit -m "Added README file`*
+
+## Combinations
+- `git commit -a` = `git add` + `git commit` (not desirable due to lack of control)
+- `git pull` = `git fetch` + `git merge` (very useful)
+
+
+<div align="center">  
+  <img src="./asset/commit-main.svg" >  
+  <br>When you commit, git creates a new commit object using the files from the stage and sets the parent to the current commit. It then points the current branch to this new commit. In the image below, the current branch is main. Before the command was run, main pointed to ed489. Afterward, a new commit, f0cec, was created, with parent ed489, and then main was moved to the new commit.<br>
+</div>
+
+<div align="center">
+  <div style="display: inline-block; margin: 0 10px;">
+    <img src="./asset/commit-stable.svg">
+  </div>
+  <div style="display: inline-block; margin: 0 10px;">
+    <img src="./asset/commit-amend.svg">
+  </div>
+  <div style="display: inline-block; margin: 0 10px;">
+    <img src="./asset/commit-detached.svg">
+  </div>
+</div>
+
+<div align="center">  
+  <img src="./asset/checkout-files.svg" >  
+  <br><br>
+</div>
+
 ### Revert to old commit
 `git log`<br>
 `git checkout <commit hex id>`
+
 ### Cancel not staged changes
 `git checkout` = it copies staging area (usually last commit) to out working copy
+
+<div align="center">  
+  <img src="./asset/reset.svg" >  
+  <br><br>
+</div>
+
 ### Reset
 `git reset` - remove all that exists in my staging area by copying them from the most recent commit (basically undoes `git add`)
+
+<div align="center">  
+  <img src="./asset/cherry-pick.svg" >  
+  <br><br>
+</div>
+
 ### Copy a commit to another branch
 `git cherry-pick <commit>` = we copy a commit from a point of the graph, we put it on active branch (therefore creating a copy of the selected commit) - new ID, same changes and description!
 ### Copy changes to new commit
@@ -140,29 +205,10 @@ NISER Bhubaneswar
 - `git reflog` = all the changes
 - `git reflog <branch>` = changes on our branch
 - `git reflog --date=relative` = displays changes relative to time
+
 ### Prune stale references
  - `git fetch -p`
 # Questions
-## How many `git add <filename>` do I need?
-
-| Times | What it does |
-| ------ | ------ |
-| 1 | Tracks `<filename>` |
-| 2 | Makes `<filename>` staged |
-| 3 | If modified again after staged, we need a thrid `git add` to stage it again |
-
-## What does `git commit` do?
-- commit a file = create a snapshot of the current world state (files, folders & their contents)
-- contains an explanatory message
-- automatically stores metadata (creator, date etc)
-- has a unique (hex) id number
-<br> *e.g.: `git commit -m "Added README file`*
-
-## Combinations
-- `git commit -a` = `git add` + `git commit` (not desirable due to lack of control)
-- `git pull` = `git fetch` + `git merge` (very useful)
-
----
 
 ## What is a branch?
 It is a version of our code. Branches have a name and are pointing to a commit (there's a different history+past commits depending on our branch, but some commits may be common).
@@ -177,19 +223,14 @@ One branche per feature (the smaller the better) so changes happen to the branch
 - `git checkout -b <name>` = creates a new branch and makes this new branch as our current working one = `git branch <name>` + `git checkout <name>`
 - `git merge <branch>` = merges <branch>'s history with my current branch + try to merge changes in files from both the branches => 2 parents in new commit. *(Afterwards we find the most recent parent of those two parents => commits of the new branch = commits of parent1 + commits of parent2 => updates master, master in new commit - see schema (1))*
 
-*schema (1)*
-![branch](https://user-images.githubusercontent.com/19435096/66163182-62b38500-e638-11e9-96a8-bc81d9ca43a4.jpg)
+<div align="center">  
+  <img src="./asset/merge.svg" >  
+  <br><br>
+</div>
 
 *Note: If you make a branch on terminal and want it to show on GitHub, you need to `git push origin branchname` first!*
 *Note2: After being done with a branch, `git checkout <productionbranch>`, and then `git merge <tesbranch>` and then `git branch -d <testbranch>` (you can delete the testbranch from GitHub's UX)*
-#
 
-### Master Branch
-- Our default branch after a `git init` command.
-- (For most projects) it has a 'current' code
-- Usually we create a new branch as a copy of master
-
-#
 ## References to parental nodes
 | Symbol  | Meaning                                            |
 |----|------------------------------------------------------------|
@@ -200,10 +241,25 @@ One branche per feature (the smaller the better) so changes happen to the branch
 
 e.g. `192a812~2` = 2 commits before commit #192a812, or `HEAD^2`
 
+### Master Branch
+- Our default branch after a `git init` command.
+- (For most projects) it has a 'current' code
+- Usually we create a new branch as a copy of master
+
 ## Rewriting History
 We can change our commits' sequence, description and changes, but: **you should not rewrite a history in commits that others may pull** <br>
 `git commit --amend` = changes most recent commit, add to it the staged stuff.<br>
 `git commit --amend --no-edit` = [check here](https://dev.to/lt0mm/comment/eo8)
+
+<div align="center">  
+  <img src="./asset/rebase.svg" >  
+  <br><br>
+</div>
+
+<div align="center">  
+  <img src="./asset/reset.svg" >  
+  <br><br>
+</div>
 
 ## Back Merging
 When I work on a branch, it is possible that some changes might have happened on master => we need `git merge master` and resolve the conflicts. Or...
@@ -211,56 +267,14 @@ When I work on a branch, it is possible that some changes might have happened on
 - `git rebase -i` = dynamic: changes the sequence of commit applies changes, fixes multiple commits or can break a commit to many.
 - `git reset <commit>` (usually `git reset HEAD`) = returns current branchto <commit>, cancels in between changes.
 
-**Not for published commits!!**
 
-- `git push --force-with-lease` or `git push --force` = if I change history, git denies pushing w/o it.
-
-## Git = graph editing system
-- Each commit is a node
-- Each previous commit is a parent node
-- Each branch points to a commit (this allows the creation of branches on the graph)
-- HEAD is our current commit
-
-#
-![a](https://user-images.githubusercontent.com/19435096/66161486-10249980-e635-11e9-9a67-46047f44010d.jpg)
-#
-![b](https://user-images.githubusercontent.com/19435096/66161764-b8d2f900-e635-11e9-83d5-da34b22bbe52.jpg)
-#
-![c](https://user-images.githubusercontent.com/19435096/66162372-e5d3db80-e636-11e9-9cdd-ba83f90c381b.jpg)
-#
-![d](https://user-images.githubusercontent.com/19435096/66162376-e79d9f00-e636-11e9-8c6b-d2e52df860b4.jpg)
-#
-![e](https://user-images.githubusercontent.com/19435096/66162381-e8cecc00-e636-11e9-91a2-acabb15f372d.jpg)
-#
-![f](https://user-images.githubusercontent.com/19435096/66162385-e9fff900-e636-11e9-94f8-814ada320bdc.jpg)
-#
-![g](https://user-images.githubusercontent.com/19435096/66162397-ec625300-e636-11e9-8512-29a60dde3967.jpg)
-#
-
-## Stash
-`git stash`
-It is used for hotfixes in branch (meanwhile there are changes in working copy) without commits and checkouts.<br>
-Therefore it keeps changes in the working copy and the staging area and thus cleans them up.<br>
-We can checkout another branch without committing or losing changes!
-
-### Commands
-- `git stash pop` = reapplies the saved working copy<br>
-![stash](https://user-images.githubusercontent.com/19435096/66163632-757a8980-e639-11e9-950f-971b431b918f.jpg)
-
-### Remotes
-Remotes are copies used to update our code.
-
-GitHub isn't git! GitHub is a [site](https://github.com/)!
-
-## GitHub's features
+## Some GitHub's features
 - `fork` = copy a repo to your GitHub account
 - `clone` = copy at your PC:<br>
 `git clone`<br>`git @ github.com/UserName/git-repo.git`<br>`cd git-repo`
 - Your PC repo has the site repo as its remote
 - Each repo copy has it's own commits/branches/history (some may be common)
 - Each remote has its own URL & name
-
-## Commands
 - `git remote` = shows repo's remotes
 - `git remote add <name> <url>`
 - `git remote rm <name>`
@@ -269,20 +283,6 @@ GitHub isn't git! GitHub is a [site](https://github.com/)!
 Origin = repo's copy to our GitHub (automatically made when cloning)<br>
 If you want to publish your code: `git push origin master` = sends master's local commits to remote's master named origin
 If you want to get your code: `git pull origin master` = brings commits at our local master from remote's master named origin
-
-## Outdated
-If someone else pushed in the meantime when we're working locally, we can't overwrite their work.
-
-    
-    push conflict: A-B-C-D
-                       |
-                       E
-
-Can't merge E,D because split => `git pull` or `git pull -rebase` (the second keeps E only locally and D is our last state)
-
-## Hub
-[A set of extra commands that expand git specifically for GitHub](https://github.com/github/hub)
-
 
 ## Intro to PRs
 If you want to push to a repo which isn't yours (after forking, cloning, branching, changing and committing our work), we request a pull from the repo's owner (usually at master) so we publish our changes:
@@ -527,27 +527,6 @@ git checkout tags/v1.0 -b v1.0 (creates local branch for this tag)
 `$ git rerere status` to verify
 
 `$ git rerere diff`
-
-
-## How to Use .gitignore and .gitkeep?
-
-### `.gitignore`
-- In Git, the `.gitignore` file is used to specify which files or directories the change tracking process should ignore.
-- [Here](https://github.com/github/gitignore/tree/main) you can find ready-made `.gitignore` templates for various technologies and languages.
-
-### `.gitkeep`
-- Not a standard Git element
-- Used to keep track of directories that we wish to keep track of, even if they are empty.
-
-### How to keep empty directories using `.gitignore`
-```
-# Ignore everything in this directory
-*
-# But do not ignore this .gitignore file
-!.gitignore
-```
-
-[Source](https://dev.to/ritaly/git-lesson-how-to-use-gitignore-and-gitkeep-5edm)
 
 ## Sources
 1. [This Git Class](https://github.com/dionyziz/git-class)
